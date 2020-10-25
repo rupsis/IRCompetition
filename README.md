@@ -4,7 +4,7 @@
 ## Project team:
 
 * [Nathaniel Rupsis](https://github.com/rupsis/) (team captain)
-* [Hoe Le](https://github.com/hle027)
+* [Hoa Le](https://github.com/hle027)
 
 
 ## Project details:
