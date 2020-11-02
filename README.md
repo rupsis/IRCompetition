@@ -125,7 +125,7 @@ These are different attempts/views to represent the same paper/document.  Some a
 
 
 
-***Submission Instructions*** : Please add a  file named `predictions.txt` containing the predicted relevance scores on the test queries. Please submit The file should be in the same format as train/qrels.txt, i.e `topic/query_id doc_uid relevance_score`. You should submit the scores for the top 1000 documents per query.
+***Submission Instructions*** : Follow the same instructions as for the MPs -- create a private copy of this repo and add a webhook to connect to LiveDataLab. Please add a  file named `predictions.txt` containing the predicted relevance scores on the test queries. Please submit The file should be in the same format as train/qrels.txt, i.e `topic/query_id doc_uid relevance_score`. You should submit the scores for the top 1000 documents per query.
 
 References
 
