@@ -3,6 +3,21 @@ import sys
 import time
 import metapy
 import pytoml
+from xml.dom import minidom
+
+
+
+def load_queries():
+    query_Doc = minidom.parse('train/queries.xml')
+    # Can change the name of the tag to retrive any desired 
+    # tag from the queries.xml (query, question, narrative)
+    xmlElements = query_Doc.getElementsByTagName('query')
+    items = []
+
+    for item in xmlElements:
+        items.append(item.firstChild.data)
+    return items
+
 
 def load_ranker(cfg_file):
     """
@@ -13,9 +28,10 @@ def load_ranker(cfg_file):
     return metapy.index.OkapiBM25(k1=1.2,b=0.75,k3=0.0111)
 
 
-def runQueries(param, print_on=True):
+def runQueries(queries):
     cfg = sys.argv[1]
-    # print('Building or loading index...')
+
+    print('Building or loading index...')
     idx = metapy.index.make_inverted_index(cfg)
 
     
@@ -77,4 +93,10 @@ if __name__ == '__main__':
         print("Usage: {} config.toml".format(sys.argv[0]))
         sys.exit(1)
 
-    testModel()
+
+    queries = load_queries()
+
+    runQueries(queries)
+
+# Save top You should submit the scores for the top 1000 documents per query
+    #  topic/query_id doc_uid relevance_score
