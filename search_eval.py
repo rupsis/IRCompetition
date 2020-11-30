@@ -35,7 +35,7 @@ def runQueries(queries):
     idx = metapy.index.make_inverted_index(cfg)
 
     
-    ranker = load_ranker_test(cfg, param)
+    ranker = load_ranker(cfg)
     ev = metapy.index.IREval(cfg)
 
     with open(cfg, 'r') as fin:
@@ -55,21 +55,21 @@ def runQueries(queries):
     ndcg = 0.0
     num_queries = 0
 
-    if print_on:
-        print('Running queries')
-    with open(query_path) as query_file:
-        for query_num, line in enumerate(query_file):
-            query.content(line.strip())
-            results = ranker.score(idx, query, top_k)
-            ndcg += ev.ndcg(results, query_start + query_num, top_k)
-            num_queries+=1
+    # if print_on:
+    #     print('Running queries')
+    # with open(query_path) as query_file:
+    for query_num, line in enumerate(queries):
+        print(line)
+        query.content(line.strip())
+        results = ranker.score(idx, query, top_k)
+        ndcg += ev.ndcg(results, query_start + query_num, top_k)
+        num_queries+=1
     ndcg= ndcg / num_queries
     
-    if print_on:
-        print("NDCG@{}: {}".format(top_k, ndcg))
-        print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
+    
+    print("NDCG@{}: {}".format(top_k, ndcg))
+    print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
 
-    return(ndcg, param)
 
 
 def testModel():
