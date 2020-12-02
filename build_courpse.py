@@ -46,10 +46,10 @@ with open('{}metadata.csv'.format(directory)) as f_in:
 
         #  build sample index
         counter += 1
-        if counter >= 100:
+        if counter >= 1000:
             break
 
-with open('train/train.dat'.format(directory), 'w') as out_file:
+with open('train/train.dat', 'w') as out_file:
     for uid in uid_to_text:
         for val in uid_to_text[uid]:
          out_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\t' + ' '.join(val.get('introduction','None')) + '\n')
