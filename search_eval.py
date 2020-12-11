@@ -6,7 +6,7 @@ import pytoml
 from xml.dom import minidom
 
 
-
+# 
 def load_queries():
     query_Doc = minidom.parse('train/queries.xml')
     # Can change the name of the tag to retrive any desired 
@@ -48,6 +48,7 @@ def runQueries(queries):
     print('Building or loading index...')
     idx = metapy.index.make_inverted_index(cfg)
 
+    print(idx)
     
     ranker = load_ranker(cfg)
     ev = metapy.index.IREval(cfg)
@@ -71,10 +72,10 @@ def runQueries(queries):
 
 
     for query_num, line in queries:
-        print(line)
+        # print(line)
         query.content(line.strip())
         results = ranker.score(idx, query, top_k)
-        print(len(results))
+        # print(len(results))
         # print(results)
         ndcg += ev.ndcg(results, query_start + int(query_num), top_k)
         num_queries+=1
