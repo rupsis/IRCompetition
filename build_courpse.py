@@ -17,7 +17,7 @@ if len(sys.argv) != 2:
 
 
 directory = '{}/documents/'.format(sys.argv[1])
-out_file_name = "{}/train.dat".format(sys.argv[1])
+out_file_name = "{}/{}.dat".format(sys.argv[1], sys.argv[1])
 out_meta_file_name = '{}/metadata.dat'.format(sys.argv[1])
 
 
@@ -62,20 +62,17 @@ with open('{}metadata.csv'.format(directory)) as f_in:
             'introduction': introduction
         })
 
-        #  build sample index
-        counter += 1
-        if counter >= 1000:
-            break
 
 
 # Write data
 with open(out_file_name, 'w+') as out_file:
     for uid in uid_to_text:
         for val in uid_to_text[uid]:
-         out_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\n')
+         out_file.write(val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\n')
 
 # Write Meta Data
-with open('train/metadata.dat', 'w+') as meta_file:
+with open(out_meta_file_name, 'w+') as meta_file:
     for uid in uid_to_text:
         for val in uid_to_text[uid]:
-         meta_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\t' + ' '.join(val.get('introduction','None')) + '\n')
+             meta_file.write(uid + "\n")
+        #  meta_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\t' + ' '.join(val.get('introduction','None')) + '\n')

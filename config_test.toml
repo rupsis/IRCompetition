@@ -1,7 +1,7 @@
 prefix = "."
 stop-words = "stopwords.txt"
 
-dataset = "cranfield"
+dataset = "test"
 corpus = "line.toml"
 index = "idx"
 

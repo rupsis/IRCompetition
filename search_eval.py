@@ -31,15 +31,16 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index.
     """
-    return metapy.index.OkapiBM25(k1=1.2,b=0.75,k3=0.0111)
+    # return metapy.index.OkapiBM25(k1=1.2,b=0.75,k3=0.0111)
+    return metapy.index.OkapiBM25()
 
 
-def saveResults():
-    with open("predictions.txt", 'w') as results:
-        pass
-        # topic/query_id doc_uid relevance_score
+def saveResults(prediction_results):
+    print("saving results")
 
-    # need to save results of queries
+    with open("predictions.txt", 'w+') as results:
+        for result in prediction_results:
+           results.write(str(result[0]) + '\t' + str(result[1]) + '\t' + str(result[2]) + "\n")
 
 
 def runQueries(queries):
@@ -47,8 +48,6 @@ def runQueries(queries):
 
     print('Building or loading index...')
     idx = metapy.index.make_inverted_index(cfg)
-
-    print(idx)
     
     ranker = load_ranker(cfg)
     ev = metapy.index.IREval(cfg)
@@ -70,13 +69,20 @@ def runQueries(queries):
     ndcg = 0.0
     num_queries = 0
 
+    # Build index mapping
 
+
+    prediction_results = []
+
+    print("starting queries...")
     for query_num, line in queries:
-        # print(line)
+
         query.content(line.strip())
         results = ranker.score(idx, query, top_k)
-        # print(len(results))
-        # print(results)
+
+        for doc in results:
+            prediction_results.append((query_num, idx.metadata(doc[0]).get('uid'), doc[1]))
+    
         ndcg += ev.ndcg(results, query_start + int(query_num), top_k)
         num_queries+=1
     ndcg= ndcg / num_queries
@@ -85,21 +91,7 @@ def runQueries(queries):
     print("NDCG@{}: {}".format(top_k, ndcg))
     print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
 
-    saveResults()
-
-
-
-def testModel():
-
-
-    for i in range(1, 100):
-        results.append(runQueries(i, print_on=False))
-        print("{} out of {}".format(i, 10000))
-
-    results_sorted = sorted(results, reverse=True)
-    print("BM25 results: ")
-    for k in results_sorted[:100]:
-        print("{}, k = {}".format(k[0], k[1]))
+    saveResults(prediction_results)
 
 
 if __name__ == '__main__':
@@ -114,6 +106,3 @@ if __name__ == '__main__':
     queries = load_queries()
 
     runQueries(queries)
-
-# Save top You should submit the scores for the top 1000 documents per query
-    #  topic/query_id doc_uid relevance_score
