@@ -17,7 +17,7 @@ if len(sys.argv) != 2:
 
 
 directory = '{}/documents/'.format(sys.argv[1])
-out_file_name = "{}/train.dat".format(sys.argv[1])
+out_file_name = "{}/{}.dat".format(sys.argv[1], sys.argv[1])
 out_meta_file_name = '{}/metadata.dat'.format(sys.argv[1])
 
 

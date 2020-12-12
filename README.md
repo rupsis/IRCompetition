@@ -169,7 +169,8 @@ metadata = [{name = "uid", type = "string"},
 
 To build the index, simply run:
 ```
-python3 build_courpse.py train
+// remove the index else the evaluator will use a cached version
+rm -rf idx/ && python3 build_courpse.py train 
 ```
 
 where the first argument is either "test" or "train" (need to have corresponding test / train files fro MetaPy to work)
