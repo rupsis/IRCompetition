@@ -36,7 +36,7 @@ def load_ranker(cfg_file):
     configuration file used to load the index.
     """
     # return metapy.index.OkapiBM25(k1=1.2,b=0.75,k3=0.0111)
-    return metapy.index.OkapiBM25()
+    return metapy.index.PivotedLength(0.2)
 
 
 def saveResults(prediction_results):
