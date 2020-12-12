@@ -40,7 +40,7 @@ def saveResults(prediction_results):
 
     with open("predictions.txt", 'w+') as results:
         for result in prediction_results:
-           results.write(str(result[0]) + '\t' + str(result[1]) + '\t' + str(result[2]) + "\n")
+           results.write(str(result[0]) + ' ' + str(result[1]) + ' ' + str(result[2]) + "\n")
 
 
 def runQueries(queries):
