@@ -64,7 +64,7 @@ with open('{}metadata.csv'.format(directory)) as f_in:
 
         #  build sample index
         counter += 1
-        if counter >= 1000:
+        if counter >= 100:
             break
 
 
@@ -75,7 +75,8 @@ with open(out_file_name, 'w+') as out_file:
          out_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\n')
 
 # Write Meta Data
-with open('train/metadata.dat', 'w+') as meta_file:
+with open(out_meta_file_name, 'w+') as meta_file:
     for uid in uid_to_text:
         for val in uid_to_text[uid]:
-         meta_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\t' + ' '.join(val.get('introduction','None')) + '\n')
+             meta_file.write(uid + "\n")
+        #  meta_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\t' + ' '.join(val.get('introduction','None')) + '\n')

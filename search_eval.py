@@ -35,7 +35,7 @@ def load_ranker(cfg_file):
 
 
 def saveResults():
-    with open("predictions.txt", 'w') as results:
+    with open("predictions.txt", 'w+') as results:
         pass
         # topic/query_id doc_uid relevance_score
 
@@ -48,7 +48,7 @@ def runQueries(queries):
     print('Building or loading index...')
     idx = metapy.index.make_inverted_index(cfg)
 
-    print(idx)
+    print(idx.metadata(1).get('title'))
     
     ranker = load_ranker(cfg)
     ev = metapy.index.IREval(cfg)
@@ -70,13 +70,23 @@ def runQueries(queries):
     ndcg = 0.0
     num_queries = 0
 
+    # Build index mapping
 
+
+    print("starting queries...")
     for query_num, line in queries:
+        # print(line)
+
         # print(line)
         query.content(line.strip())
         results = ranker.score(idx, query, top_k)
+
         # print(len(results))
         # print(results)
+        # for doc in results:
+            # print(doc[0])
+            # print(idx.metadata(doc[0]).get('title'))
+    
         ndcg += ev.ndcg(results, query_start + int(query_num), top_k)
         num_queries+=1
     ndcg= ndcg / num_queries
