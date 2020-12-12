@@ -92,7 +92,7 @@ def runQueries(queries):
 
     ndcg= ndcg / num_queries
     
-    
+    print("MAP: {}".format(ev.map()))
     print("NDCG@{}: {}".format(top_k, ndcg))
     print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
 
