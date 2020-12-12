@@ -140,3 +140,44 @@ References
     publisher = "Association for Computational Linguistics”
 }
 ```
+
+
+# Running the program
+
+Directory:
+```
+| - /test
+        \- line.toml
+        ... data
+| - /train
+        \- line.toml
+        ... data
+```
+A test and train directory need to exist with a `line.toml` file which specifies the metaData
+
+```
+// line.toml
+
+type = "line-corpus"
+
+metadata = [{name = "uid", type = "string"},
+            {name = "title", type = "string"},
+            {name = "abstract", type = "string"},
+            {name = "introduction", type = "string"}]
+
+```
+
+To build the index, simply run:
+```
+python3 build_courpse.py train
+```
+
+where the first argument is either "test" or "train" (need to have corresponding test / train files fro MetaPy to work)
+
+To run the evaluator:
+```
+python search_eval.py config_train.toml
+```
+
+where the config argument is either `config_train.toml` or `config_test.toml`
+

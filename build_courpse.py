@@ -1,11 +1,29 @@
 import csv
+import sys
 import os
 import json
 from collections import defaultdict
+import argparse
 
 uid_to_text = defaultdict(list)
 
-directory = 'train/documents/'
+
+
+if len(sys.argv) != 2:
+    if sys.argv[1] != ("train" or "test"):
+        print("Please specify test or train data")
+        sys.exit(1)
+
+
+
+directory = '{}/documents/'.format(sys.argv[1])
+out_file_name = "{}/train.dat".format(sys.argv[1])
+out_meta_file_name = '{}/metadata.dat'.format(sys.argv[1])
+
+
+
+
+
 
 # open the file
 with open('{}metadata.csv'.format(directory)) as f_in:
@@ -51,7 +69,7 @@ with open('{}metadata.csv'.format(directory)) as f_in:
 
 
 # Write data
-with open('train/train.dat', 'w+') as out_file:
+with open(out_file_name, 'w+') as out_file:
     for uid in uid_to_text:
         for val in uid_to_text[uid]:
          out_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\n')
