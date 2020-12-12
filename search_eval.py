@@ -8,7 +8,11 @@ from xml.dom import minidom
 
 # 
 def load_queries():
-    query_Doc = minidom.parse('train/queries.xml')
+
+    with open(sys.argv[1], 'r') as fin:
+        cfg_d = pytoml.load(fin)
+
+    query_Doc = minidom.parse('{}/queries.xml'.format(cfg_d['dataset']))
     # Can change the name of the tag to retrive any desired 
     # tag from the queries.xml (query, question, narrative)
     topics = query_Doc.getElementsByTagName('topic')
