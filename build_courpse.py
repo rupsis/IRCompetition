@@ -62,17 +62,13 @@ with open('{}metadata.csv'.format(directory)) as f_in:
             'introduction': introduction
         })
 
-        #  build sample index
-        counter += 1
-        if counter >= 100:
-            break
 
 
 # Write data
 with open(out_file_name, 'w+') as out_file:
     for uid in uid_to_text:
         for val in uid_to_text[uid]:
-         out_file.write(uid + '\t' + val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\n')
+         out_file.write(val.get('title', 'None') + '\t' + val.get('abstract', 'None')  + '\n')
 
 # Write Meta Data
 with open(out_meta_file_name, 'w+') as meta_file:
