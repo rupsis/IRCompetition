@@ -6,6 +6,14 @@ import pytoml
 from xml.dom import minidom
 
 
+def expand_query(query):
+    # Simple approach to query expansion
+    covid_synonyms = {'covid', 'corona', 'covid-19', 'coronavirus'}
+
+    query_words = set(query.lower().split())
+
+    return ' '.join(query_words.union(covid_synonyms))
+
 # 
 def load_queries():
 
@@ -22,7 +30,8 @@ def load_queries():
         items.append(
             (topic.getAttribute('number'), 
             # Get first element in the topic xml. 
-            topic.getElementsByTagName('query')[0].firstChild.data)
+            expand_query(topic.getElementsByTagName('query')[0].firstChild.data))
+
         )
 
     # Return tuple array (queryId, query)
@@ -35,7 +44,7 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index.
     """
-    return metapy.index.OkapiBM25(k1=1.2,b=0.75,k3=0.5)
+    return metapy.index.OkapiBM25()
     # return metapy.index.AbsoluteDiscount(0.7)
 
 
@@ -72,6 +81,7 @@ def runQueries(queries):
     query = metapy.index.Document()
     ndcg = 0.0
     num_queries = 0
+    score = 0.0
 
     # Build index mapping
 
@@ -86,12 +96,14 @@ def runQueries(queries):
 
         for doc in results:
             prediction_results.append((query_num, idx.metadata(doc[0]).get('uid'), doc[1]))
+            score += doc[1]
     
         ndcg += ev.ndcg(results, query_start + int(query_num), top_k)
         num_queries+=1
 
     ndcg= ndcg / num_queries
     
+    print("Average score: {}".format(score / len(prediction_results)))
     print("MAP: {}".format(ev.map()))
     print("NDCG@{}: {}".format(top_k, ndcg))
     print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
