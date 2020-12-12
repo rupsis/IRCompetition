@@ -3,6 +3,27 @@ import sys
 import time
 import metapy
 import pytoml
+from xml.dom import minidom
+
+
+# 
+def load_queries():
+    query_Doc = minidom.parse('train/queries.xml')
+    # Can change the name of the tag to retrive any desired 
+    # tag from the queries.xml (query, question, narrative)
+    topics = query_Doc.getElementsByTagName('topic')
+    items = []
+
+    for topic in topics:
+        items.append(
+            (topic.getAttribute('number'), 
+            # Get first element in the topic xml. 
+            topic.getElementsByTagName('query')[0].firstChild.data)
+        )
+
+    # Return tuple array (queryId, query)
+    return items
+
 
 def load_ranker(cfg_file):
     """
@@ -13,13 +34,23 @@ def load_ranker(cfg_file):
     return metapy.index.OkapiBM25(k1=1.2,b=0.75,k3=0.0111)
 
 
-def runQueries(param, print_on=True):
+def saveResults():
+    with open("predictions.txt", 'w') as results:
+        pass
+        # topic/query_id doc_uid relevance_score
+
+    # need to save results of queries
+
+
+def runQueries(queries):
     cfg = sys.argv[1]
-    # print('Building or loading index...')
+
+    print('Building or loading index...')
     idx = metapy.index.make_inverted_index(cfg)
 
+    print(idx)
     
-    ranker = load_ranker_test(cfg, param)
+    ranker = load_ranker(cfg)
     ev = metapy.index.IREval(cfg)
 
     with open(cfg, 'r') as fin:
@@ -31,7 +62,7 @@ def runQueries(param, print_on=True):
         sys.exit(1)
 
     start_time = time.time()
-    top_k = 10
+    top_k = 1000
     query_path = query_cfg.get('query-path', 'queries.txt')
     query_start = query_cfg.get('query-id-start', 0)
 
@@ -39,21 +70,23 @@ def runQueries(param, print_on=True):
     ndcg = 0.0
     num_queries = 0
 
-    if print_on:
-        print('Running queries')
-    with open(query_path) as query_file:
-        for query_num, line in enumerate(query_file):
-            query.content(line.strip())
-            results = ranker.score(idx, query, top_k)
-            ndcg += ev.ndcg(results, query_start + query_num, top_k)
-            num_queries+=1
+
+    for query_num, line in queries:
+        # print(line)
+        query.content(line.strip())
+        results = ranker.score(idx, query, top_k)
+        # print(len(results))
+        # print(results)
+        ndcg += ev.ndcg(results, query_start + int(query_num), top_k)
+        num_queries+=1
     ndcg= ndcg / num_queries
     
-    if print_on:
-        print("NDCG@{}: {}".format(top_k, ndcg))
-        print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
+    
+    print("NDCG@{}: {}".format(top_k, ndcg))
+    print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
 
-    return(ndcg, param)
+    saveResults()
+
 
 
 def testModel():
@@ -77,4 +110,10 @@ if __name__ == '__main__':
         print("Usage: {} config.toml".format(sys.argv[0]))
         sys.exit(1)
 
-    testModel()
+
+    queries = load_queries()
+
+    runQueries(queries)
+
+# Save top You should submit the scores for the top 1000 documents per query
+    #  topic/query_id doc_uid relevance_score
