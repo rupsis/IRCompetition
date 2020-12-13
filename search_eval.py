@@ -6,6 +6,15 @@ import pytoml
 from xml.dom import minidom
 
 
+def ndcg_ev(cfg, results):
+    with open(sys.argv[1], 'r') as fin:
+        cfg_d = pytoml.load(fin)
+
+    with open('{}/qrels.txt'.format(cfg_d['dataset'])) as qrels:
+        for line in qrels:
+            words = line.split(line)
+
+
 def expand_query(query):
     # Simple approach to query expansion
     covid_synonyms = {'covid', 'corona', 'covid-19', 'coronavirus', 'SARS-CoV-2'}
@@ -44,8 +53,8 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index.
     """
-    # return metapy.index.OkapiBM25(k1=3,b=0.75, k3=1000000)
-    return metapy.index.OkapiBM25()
+    return metapy.index.OkapiBM25(k1=1.2,b=0.75, k3=1)
+    # return metapy.index.OkapiBM25()
     # return metapy.index.AbsoluteDiscount(0.7)
 
 
