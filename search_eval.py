@@ -5,6 +5,18 @@ import metapy
 import pytoml
 from xml.dom import minidom
 
+stop_words = {'ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about', 
+'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be', 'some', 'for', 
+'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself', 'other', 'off', 'is', 's', 'am', 
+'or', 'who', 'as', 'from', 'him', 'each', 'the', 'themselves', 'until', 'below', 'are', 'we', 
+'these', 'your', 'his', 'through', 'don', 'nor', 'me', 'were', 'her', 'more', 'himself', 'this', 
+'down', 'should', 'our', 'their', 'while', 'above', 'both', 'up', 'to', 'ours', 'had', 'she', 
+'all', 'no', 'when', 'at', 'any', 'before', 'them', 'same', 'and', 'been', 'have', 'in', 'will',
+ 'on', 'does', 'yourselves', 'then', 'that', 'because', 'what', 'over', 'why', 'so', 'can', 'did', 
+ 'not', 'now', 'under', 'he', 'you', 'herself', 'has', 'just', 'where', 'too', 'only', 'myself', 
+ 'which', 'those', 'i', 'after', 'few', 'whom', 't', 'being', 'if', 'theirs', 'my', 'against', 'a', 
+ 'by', 'doing', 'it', 'how', 'further', 'was', 'here', 'than'}
+
 
 def ndcg_ev(cfg, results):
     with open(sys.argv[1], 'r') as fin:
@@ -17,7 +29,11 @@ def ndcg_ev(cfg, results):
 
 def expand_query(query):
     # Filtering common stop words
-    stop_words = {'the', 'a', 'not', 'is', 'an', 'in', 'are', 'do', 'as', 'of', 'how', 'and'}
+
+    #  0.5590646824403191
+    # stop_words = {'the', 'a', 'not', 'is', 'an', 'in', 'are', 'do', 'as', 'of', 'how', 'and'}
+
+
     query_words = set(query.lower().split())
 
     query_words = set([w for w in query_words if not w in stop_words])
@@ -40,7 +56,7 @@ def expand_query(query):
     #             break
 
 
-    # print(query_words)
+    print(query_words)
 
     return ' '.join(query_words.union(covid_synonyms))
 
