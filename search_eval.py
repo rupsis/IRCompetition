@@ -19,7 +19,7 @@ def expand_query(query):
     # Simple approach to query expansion
     # covid_synonyms = {'covid', 'corona', 'covid-19', 'coronavirus', 'SARS-CoV-2'} # 0.4077691935131669
     # covid_synonyms = {'covid-19', 'coronavirus'} # 0.5543498471113332
-    covid_synonyms = {'covid-19', 'coronavirus', 'SARS-CoV-2'} 
+    covid_synonyms = {'covid-19', 'coronavirus', 'covid'} 
     # covid_synonyms = {} # 0.4848314175441014
 
     query_words = set(query.lower().split())
