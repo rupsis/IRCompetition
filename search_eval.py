@@ -29,6 +29,13 @@ def ndcg_ev(cfg, results):
         for line in qrels:
             words = line.split(line)
 
+def word_expand(wordSet, expandSet):
+    # if query wors is in expandSet, add expansion
+    for word in wordSet:
+        if word in expandSet:
+            return wordSet.union(expandSet)
+
+    return wordSet
 
 def expand_query(query):
     # Filtering common stop words
@@ -43,25 +50,21 @@ def expand_query(query):
 
     # Simple approach to query expansion
     # After tweaking, these yielded the best results
-    covid_synonyms = {'covid-19', 'coronavirus'} 
+    covid_synonyms = {'covid-19', 'coronavirus', 'virus'} 
 
     # Another common tense, is test (tests, testing)
     test_synonyms = {'test', 'testing', 'tests'}
     # if(X in test_synonyms in query_words if )
 
-    
-    # for words in query_words:
-    #     for word in words:
-    #         if word in test_synonyms:
-    #             print(true)
-    #             print(word)
-    #             query_words.union(test_synonyms)
-    #             break
+    query_words = word_expand(query_words, covid_synonyms)
 
 
-    # print(query_words)
 
-    return ' '.join(query_words.union(covid_synonyms))
+    print(query_words)
+
+
+    # Return query string
+    return ' '.join(query_words)
 
 # 
 def load_queries():
