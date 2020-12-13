@@ -50,7 +50,7 @@ def expand_query(query):
 
     # Simple approach to query expansion
     # After tweaking, these yielded the best results
-    covid_synonyms = {'covid-19', 'coronavirus', 'virus'} 
+    covid_synonyms = {'covid-19', 'coronavirus'} 
 
     # Another common tense, is test (tests, testing)
     test_synonyms = {'test', 'testing', 'tests'}
@@ -60,7 +60,7 @@ def expand_query(query):
 
 
 
-    print(query_words)
+    # print(query_words)
 
 
     # Return query string
