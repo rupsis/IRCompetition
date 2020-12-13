@@ -4,6 +4,7 @@ import time
 import metapy
 import pytoml
 from xml.dom import minidom
+import string
 
 stop_words = {'ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about', 
 'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be', 'some', 'for', 
@@ -18,6 +19,8 @@ stop_words = {'ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there
  'by', 'doing', 'it', 'how', 'further', 'was', 'here', 'than'}
 
 
+
+
 def ndcg_ev(cfg, results):
     with open(sys.argv[1], 'r') as fin:
         cfg_d = pytoml.load(fin)
@@ -30,12 +33,12 @@ def ndcg_ev(cfg, results):
 def expand_query(query):
     # Filtering common stop words
 
-    #  0.5590646824403191
-    # stop_words = {'the', 'a', 'not', 'is', 'an', 'in', 'are', 'do', 'as', 'of', 'how', 'and'}
-
-
+    # remove punctuation
+    exclude = set('!"#$%&\'()*+,./:;<=>?@[\]^_`{|}~')
+    query = ''.join(ch for ch in query if ch not in exclude)
     query_words = set(query.lower().split())
 
+    # Filtering common stop words
     query_words = set([w for w in query_words if not w in stop_words])
 
     # Simple approach to query expansion
@@ -56,7 +59,7 @@ def expand_query(query):
     #             break
 
 
-    print(query_words)
+    # print(query_words)
 
     return ' '.join(query_words.union(covid_synonyms))
 
