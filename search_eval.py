@@ -60,9 +60,6 @@ def expand_query(query):
 
 
 
-    # print(query_words)
-
-
     # Return query string
     return ' '.join(query_words)
 
@@ -79,11 +76,17 @@ def load_queries():
     items = []
 
     for topic in topics:
+        # items.append(
+        #     (topic.getAttribute('number'), 
+        #     # Get first element in the topic xml. 
+        #     expand_query(topic.getElementsByTagName('query')[0].firstChild.data) + 
+        #     expand_query(topic.getElementsByTagName('question')[0].firstChild.data))
+        # )
+
         items.append(
             (topic.getAttribute('number'), 
             # Get first element in the topic xml. 
-            expand_query(topic.getElementsByTagName('query')[0].firstChild.data) + 
-            expand_query(topic.getElementsByTagName('question')[0].firstChild.data))
+            expand_query(topic.getElementsByTagName('query')[0].firstChild.data))
         )
 
     # Return tuple array (queryId, query)
@@ -100,7 +103,6 @@ def load_ranker(cfg_file):
     return metapy.index.OkapiBM25()
     # return metapy.index.AbsoluteDiscount(0.7)
 
-    # 	0.39528807669046434 at k3=1
 
 
 def saveResults(prediction_results):
