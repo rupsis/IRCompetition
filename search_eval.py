@@ -17,7 +17,8 @@ def ndcg_ev(cfg, results):
 
 def expand_query(query):
     # Simple approach to query expansion
-    covid_synonyms = {'covid', 'corona', 'covid-19', 'coronavirus', 'SARS-CoV-2'}
+    # covid_synonyms = {'covid', 'corona', 'covid-19', 'coronavirus', 'SARS-CoV-2'}
+    covid_synonyms = {}
 
     query_words = set(query.lower().split())
 # 0.351030463974
