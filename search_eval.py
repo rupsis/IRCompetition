@@ -16,14 +16,32 @@ def ndcg_ev(cfg, results):
 
 
 def expand_query(query):
-    # Simple approach to query expansion
-    # covid_synonyms = {'covid', 'corona', 'covid-19', 'coronavirus', 'SARS-CoV-2'} # 0.4077691935131669
-    # covid_synonyms = {'covid-19', 'coronavirus'} # 0.5543498471113332
-    covid_synonyms = {'covid-19', 'coronavirus', 'covid'} 
-    # covid_synonyms = {} # 0.4848314175441014
-
+    # Filtering common stop words
+    stop_words = {'the', 'a', 'not', 'is', 'an', 'in', 'are', 'do', 'as', 'of', 'how', 'and'}
     query_words = set(query.lower().split())
-# 0.351030463974
+
+    query_words = set([w for w in query_words if not w in stop_words])
+
+    # Simple approach to query expansion
+    # After tweaking, these yielded the best results
+    covid_synonyms = {'covid-19', 'coronavirus'} 
+
+    # Another common tense, is test (tests, testing)
+    test_synonyms = {'test', 'testing', 'tests'}
+    # if(X in test_synonyms in query_words if )
+
+    
+    # for words in query_words:
+    #     for word in words:
+    #         if word in test_synonyms:
+    #             print(true)
+    #             print(word)
+    #             query_words.union(test_synonyms)
+    #             break
+
+
+    # print(query_words)
+
     return ' '.join(query_words.union(covid_synonyms))
 
 # 
