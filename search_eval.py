@@ -54,9 +54,9 @@ def expand_query(query):
 
     # Another common tense, is test (tests, testing)
     test_synonyms = {'test', 'testing', 'tests'}
-    # if(X in test_synonyms in query_words if )
 
     query_words = word_expand(query_words, covid_synonyms)
+    query_words= word_expand(query_words, test_synonyms)
 
 
 
